@@ -1,11 +1,14 @@
 package com.anurag.fifa;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -13,9 +16,22 @@ import java.util.List;
 public class MatchController {
     @Autowired
     private MatchService mservice;
+    private String jsonFile = "src/main/resources/static/static.json";
+
+    private void saveToFile(List<Matches> matches){
+        ObjectMapper objectMapper = new ObjectMapper();
+        try (FileWriter fileWriter = new FileWriter(jsonFile)){
+            System.out.println("===========WRITING FILE ==========");
+            objectMapper.writeValue(fileWriter, matches);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     @GetMapping("/display")
     public List<Matches> getAll(){
+        saveToFile(mservice.getAllMatches());
         return mservice.getAllMatches();
     }
 

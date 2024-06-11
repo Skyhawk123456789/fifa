@@ -9,7 +9,8 @@
 <script>
     function fetchData() {
         // Make AJAX request to fetch data from /matches/display endpoint to retrieve List<Matches>
-        fetch('/matches/display')
+        //fetch('/matches/display')
+        fetch('static.json')
             .then(response => response.json())
             .then(matches => {
                 // Clear existing rows
